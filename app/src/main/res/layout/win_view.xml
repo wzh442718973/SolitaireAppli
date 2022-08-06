@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="500dp"
+    android:layout_height="500dp"
+    android:foregroundTint="#BC9C9C">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="286dp"
+        android:layout_height="25dp"
+        android:background="#98769E"
+        android:text="Félicitations, vous avez gagné !"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="71dp" />
+</RelativeLayout>
