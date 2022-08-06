@@ -121,6 +121,10 @@ public class SolitaireController {
             parametres.setPileTargetIndex(selectedPile);
             if(solitaireModel.getSolitaireMoveChecker().checkMoveToPile(parametres)) {
                 solitaireModel.getSolitaireMove().moveToPile(parametres);
+                if(solitaireModel.getSolitaireEndChecker().checkEnd())
+                {
+                    solitaireModel.setWin(true);
+                }
             }
             else
             {
@@ -144,7 +148,9 @@ public class SolitaireController {
 
     public void lastMove()
     {
-        solitaireModel.getSolitaireModelArchives().restaureLastMove();
-        solitaireModel.notifyObs();
+        if(!solitaireModel.isWin()) {
+            solitaireModel.getSolitaireModelArchives().restaureLastMove();
+            solitaireModel.notifyObs();
+        }
     }
 }

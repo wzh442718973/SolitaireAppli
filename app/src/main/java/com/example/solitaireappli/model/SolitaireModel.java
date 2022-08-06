@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-public class SolitaireModel extends Observable {
+public class SolitaireModel extends Observable implements IGameWithPiles {
 
     private List<CardCollection> piles;
     private CardCollection pioche;
@@ -91,6 +91,26 @@ public class SolitaireModel extends Observable {
         this.sourceIndex = sourceIndex;
     }
 
+    private ISolitaireEndChecker solitaireEndChecker;
+
+    public ISolitaireEndChecker getSolitaireEndChecker() {
+        return solitaireEndChecker;
+    }
+
+    public void setSolitaireEndChecker(ISolitaireEndChecker solitaireEndChecker) {
+        this.solitaireEndChecker = solitaireEndChecker;
+    }
+
+    private boolean isWin = false;
+
+    public boolean isWin() {
+        return isWin;
+    }
+
+    public void setWin(boolean win) {
+        isWin = win;
+    }
+
     public SolitaireModel() {
 
     }
@@ -102,6 +122,7 @@ public class SolitaireModel extends Observable {
         defausse = new ArrayCardCollection();
         piles = new ArrayList<CardCollection>() ;
         deck = new ArrayList<CardCollection>() ;
+        isWin = false;
         for(Rank rank: Rank.values() )
         {
             for(Suit suit: Suit.values() )
@@ -131,6 +152,7 @@ if(rank != Rank.NONE && suit != Suit.NONE)
         solitaireMove = new SolitaireMove(this);
         solitaireMoveChecker = new SolitaireMoveChecker(this);
         solitaireModelArchives = new SolitaireModelArchives(this);
+        solitaireEndChecker = new SolitaireEndChecker(this);
         taken = new ArrayCardCollection();
 notifyObs();
     }

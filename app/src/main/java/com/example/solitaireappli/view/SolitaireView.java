@@ -56,6 +56,8 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
     private List<CardCollectionView> deckView;
     private CardCollectionView takenView;
 
+    private WinView winView;
+
     public SetParameters getSetParameters() {
         return setParameters;
     }
@@ -201,6 +203,15 @@ Card card = model.getTaken().getCard(i);
             cardView.setY(yTaken + i*setParameters.dYDeck);
             takenView.addCardView(cardView);
         }
+
+        if(model.isWin())
+        {
+
+            body.addView(winView,params);
+            winView.setX(setParameters.xWin);
+            winView.setY(setParameters.yWin);
+            body.bringChildToFront(winView);
+        }
 //        for(int i=0;i<model.getDeck().size();i++)
 //        {
 //            for(int j=0;j<model.getDeck().get(i).size();j++)
@@ -245,7 +256,7 @@ Card card = model.getTaken().getCard(i);
         deckView = new ArrayList<CardCollectionView>();
 
         takenView = new ArrayCardCollectionView() ;
-
+winView = new WinView(context);
         solitaireModel = new SolitaireModel();
 
 buttonBack = findViewById(R.id.buttonBack);

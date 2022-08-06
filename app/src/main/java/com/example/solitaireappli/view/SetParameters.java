@@ -23,6 +23,9 @@ public class SetParameters {
     public float xTaken = 0.f;
     public float yTaken = 600.f;
 
+    public float xWin = 10.f;
+    public float yWin = 250.f;
+
     public SetParameters() {
     }
 }
