@@ -24,6 +24,12 @@ public class CardView extends View implements ICollisionItem{
     private Bitmap mImage;
     private boolean isEmpty = false;
 
+    private  ICardParameters cardParameters = new CardParameters();
+
+    public ICardParameters getCardParameters() {
+        return cardParameters;
+    }
+
     public boolean isEmpty() {
         return isEmpty;
     }
@@ -93,10 +99,10 @@ public class CardView extends View implements ICollisionItem{
     private void init(@Nullable AttributeSet set) {
         if (!isEmpty) {
             mImage = new CardLoader().cardLoad(this.getContext(), this.card);
-            mImage = getResizedBitmap(mImage, 100, 200);
+            mImage = getResizedBitmap(mImage, cardParameters.getWidth(), cardParameters.getHeight());
         } else {
             mImage = BitmapFactory.decodeResource(getResources(), com.example.solitaireappli.R.drawable.empty);
-            mImage = getResizedBitmap(mImage, 100, 200);
+            mImage = getResizedBitmap(mImage, cardParameters.getWidth(), cardParameters.getHeight());
         }
 
     }

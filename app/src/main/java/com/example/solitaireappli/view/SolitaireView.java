@@ -58,8 +58,16 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
 
     private WinView winView;
 
-    public SetParameters getSetParameters() {
+    public ISetParameters getSetParameters() {
         return setParameters;
+    }
+
+    public ISetParameters setParameters = new SetParameters();
+
+    public ISetParametersTaken setParametersTaken = new SetParametersTaken();
+
+    public ISetParametersTaken getSetParametersTaken() {
+        return setParametersTaken;
     }
 
     public CardCollectionView getTakenView() {
@@ -78,7 +86,7 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
     private RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
     View rootView;
 
-SetParameters setParameters = new SetParameters();
+
 
     RelativeLayout header;
     RelativeLayout body;
@@ -136,8 +144,8 @@ SetParameters setParameters = new SetParameters();
 piocheView.clear();
         CardView cardViewPioche = model.getPioche().size()>0 ? new CardView(this.getContext(),model.getPioche().getCard(0)) : new CardView(this.getContext(),new Card(Suit.NONE, Rank.NONE,false));
         body.addView(cardViewPioche,params);
-        cardViewPioche.setX(setParameters.xPioche);
-        cardViewPioche.setY(setParameters.yPioche);
+        cardViewPioche.setX(setParameters.getxPioche());
+        cardViewPioche.setY(setParameters.getyPioche());
         piocheView.addCardView(cardViewPioche);
 
 
@@ -146,8 +154,8 @@ defausseView.clear();
         {
             CardView cardView = new CardView(this.getContext(),model.getDefausse().getLastCard());
             body.addView(cardView,params);
-            cardView.setX(setParameters.xDefausse);
-            cardView.setY(setParameters.yDefausse);
+            cardView.setX(setParameters.getxDefausse());
+            cardView.setY(setParameters.getyDefausse());
             defausseView.addCardView(cardView);
         }
 
@@ -155,8 +163,8 @@ defausseView.clear();
         {
             CardView cardView = new CardView(this.getContext(),new Card(Suit.NONE, Rank.NONE,false));
             body.addView(cardView,params);
-            cardView.setX(setParameters.xDefausse);
-            cardView.setY(setParameters.yDefausse);
+            cardView.setX(setParameters.getxDefausse());
+            cardView.setY(setParameters.getyDefausse());
             defausseView.addCardView(cardView);
         }
 
@@ -167,8 +175,8 @@ pilesView.clear();
             Card card = model.getPiles().get(i).size() == 0  ? new Card(Suit.NONE, Rank.NONE,false) : model.getPiles().get(i).getLastCard();
             CardView cardView = new CardView(this.getContext(),card);
             body.addView(cardView,params);
-            cardView.setX(setParameters.xPiles + i* setParameters.dXPiles);
-            cardView.setY(setParameters.yPiles + i* setParameters.dYPiles);
+            cardView.setX(setParameters.getxPiles() + i* setParameters.getdXPiles());
+            cardView.setY(setParameters.getyPiles() + i* setParameters.getdYPiles());
             pileCollection.addCardView(cardView);
             pilesView.add(pileCollection);
         }
@@ -184,8 +192,8 @@ pilesView.clear();
                 //Card card = model.getPiles().get(i).size() == 0  ? new Card(Suit.NONE, Rank.NONE,false) : model.getPiles().get(i).getLastCard();
                 CardView cardView = new CardView(this.getContext(),card);
                 body.addView(cardView,params);
-                cardView.setX(setParameters.xDeck + i* setParameters.dXDeck);
-                cardView.setY(setParameters.yDeck + j* setParameters.dYDeck);
+                cardView.setX(setParameters.getxDeck() + i* setParameters.getdXDeck());
+                cardView.setY(setParameters.getyDeck() + j* setParameters.getdYDeck());
                 cardCollectionView.addCardView(cardView);
             }
             deckView.add(cardCollectionView);
@@ -200,7 +208,7 @@ Card card = model.getTaken().getCard(i);
             CardView cardView = new CardView(this.getContext(),card);
             body.addView(cardView,params);
             cardView.setX(xTaken);
-            cardView.setY(yTaken + i*setParameters.dYDeck);
+            cardView.setY(yTaken + i*setParameters.getdYDeck());
             takenView.addCardView(cardView);
         }
 
@@ -208,8 +216,8 @@ Card card = model.getTaken().getCard(i);
         {
 
             body.addView(winView,params);
-            winView.setX(setParameters.xWin);
-            winView.setY(setParameters.yWin);
+            winView.setX(setParameters.getxWin());
+            winView.setY(setParameters.getyWin());
             body.bringChildToFront(winView);
         }
 //        for(int i=0;i<model.getDeck().size();i++)
@@ -383,8 +391,8 @@ buttonBack.setOnClickListener(new OnClickListener() {
             else
             {
                 CardView emptyCV = new CardView(this.getContext());
-                emptyCV.setX(setParameters.xDeck + i*setParameters.dXDeck );
-                emptyCV.setY(setParameters.yDeck);
+                emptyCV.setX(setParameters.getxDeck() + i*setParameters.getdXDeck() );
+                emptyCV.setY(setParameters.getyDeck());
                 cardViews.add(emptyCV);
             }
         }

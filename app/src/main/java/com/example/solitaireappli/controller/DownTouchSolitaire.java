@@ -23,12 +23,12 @@ public class DownTouchSolitaire implements SolitaireTouchEvent{
         solitaireView.xEvent = x;
         solitaireView.yEvent = y;
 
-        solitaireView.xTaken = solitaireView.getSetParameters().xDeck + column * solitaireView.getSetParameters().dXDeck;
-        solitaireView.yTaken = solitaireView.getSetParameters().yDeck + row * solitaireView.getSetParameters().dYDeck;
+        solitaireView.xTaken = solitaireView.getSetParameters().getxDeck() + column * solitaireView.getSetParameters().getdXDeck();
+        solitaireView.yTaken = solitaireView.getSetParameters().getyDeck() + row * solitaireView.getSetParameters().getdYDeck();
         for(int i=0;i< solitaireView.getTakenView().size();i++)
         {
             solitaireView.getTakenView().get(i).setX(solitaireView.xTaken);
-            solitaireView.getTakenView().get(i).setY(solitaireView.yTaken + i*solitaireView.getSetParameters().dYDeck);
+            solitaireView.getTakenView().get(i).setY(solitaireView.yTaken + i*solitaireView.getSetParameters().getdYDeck());
         }
         solitaireView.setToForeGround(solitaireView.getTakenView());
     }
@@ -47,8 +47,8 @@ solitaireController.piocher();
             {
             solitaireView.xEvent = x;
             solitaireView.yEvent = y;
-            solitaireView.xTaken = solitaireView.getSetParameters().xDefausse;
-            solitaireView.yTaken = solitaireView.getSetParameters().yDefausse;
+            solitaireView.xTaken = solitaireView.getSetParameters().getxDefausse();
+            solitaireView.yTaken = solitaireView.getSetParameters().getyDefausse();
 
             solitaireView.getTakenView().get(0).setX(solitaireView.xTaken);
             solitaireView.getTakenView().get(0).setY(solitaireView.yTaken);
