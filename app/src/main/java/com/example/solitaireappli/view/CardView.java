@@ -8,9 +8,12 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
+import com.example.solitaireappli.App;
 import com.example.solitaireappli.R;
 import com.example.solitaireappli.model.Card;
 import com.example.solitaireappli.model.Rank;
@@ -24,7 +27,7 @@ public class CardView extends View implements ICollisionItem{
     private Bitmap mImage;
     private boolean isEmpty = false;
 
-    private  ICardParameters cardParameters = new CardParameters();
+    private  ICardParameters cardParameters = null;//new CardParameters();
 
     public ICardParameters getCardParameters() {
         return cardParameters;
@@ -89,20 +92,21 @@ public class CardView extends View implements ICollisionItem{
 
         init(attrs);
     }
-
-    public CardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-
-        init(attrs);
-    }
+//
+//    public CardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//
+//        init(attrs);
+//    }
 
     private void init(@Nullable AttributeSet set) {
+        cardParameters = (App)getContext().getApplicationContext();
         if (!isEmpty) {
             mImage = new CardLoader().cardLoad(this.getContext(), this.card);
-            mImage = getResizedBitmap(mImage, cardParameters.getWidth(), cardParameters.getHeight());
+            mImage = getResizedBitmap(mImage, (int) App.CARD_WIDTH, (int) App.CARD_HEIGH);//cardParameters.getWidth(), cardParameters.getHeight());
         } else {
             mImage = BitmapFactory.decodeResource(getResources(), com.example.solitaireappli.R.drawable.empty);
-            mImage = getResizedBitmap(mImage, cardParameters.getWidth(), cardParameters.getHeight());
+            mImage = getResizedBitmap(mImage, (int) App.CARD_WIDTH, (int) App.CARD_HEIGH);//cardParameters.getWidth(), cardParameters.getHeight());
         }
 
     }

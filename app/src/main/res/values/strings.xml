@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">SolitaireAppli</string>
+    <string name="game_over">You passed!!!</string>
+    <string name="game_tip">Challenge for a new round or exit?</string>
+    <string name="game_exit">Exit</string>
+    <string name="game_start">New Game</string>
+    <string name="game_back">Back</string>
+    
+    
+
+    <dimen name="x_offset" >10dp</dimen>
+    <dimen name="y_offset">10dp</dimen>
 </resources>

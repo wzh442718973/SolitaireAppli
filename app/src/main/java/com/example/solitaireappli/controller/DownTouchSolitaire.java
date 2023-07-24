@@ -1,6 +1,7 @@
 package com.example.solitaireappli.controller;
 
 
+import com.example.solitaireappli.App;
 import com.example.solitaireappli.view.ICollisionGame;
 import com.example.solitaireappli.view.SolitaireView;
 
@@ -23,12 +24,15 @@ public class DownTouchSolitaire implements SolitaireTouchEvent{
         solitaireView.xEvent = x;
         solitaireView.yEvent = y;
 
-        solitaireView.xTaken = solitaireView.getSetParameters().getxDeck() + column * solitaireView.getSetParameters().getdXDeck();
-        solitaireView.yTaken = solitaireView.getSetParameters().getyDeck() + row * solitaireView.getSetParameters().getdYDeck();
+//        solitaireView.xTaken = solitaireView.getSetParameters().getxDeck() + column * solitaireView.getSetParameters().getdXDeck();
+//        solitaireView.yTaken = solitaireView.getSetParameters().getyDeck() + row * solitaireView.getSetParameters().getdYDeck();
+        solitaireView.xTaken = App.X_DECK + column * (App.H_SPACE + App.CARD_WIDTH);
+        solitaireView.yTaken = App.Y_DECK + (row - 1) * App.V_SPACE;
+
         for(int i=0;i< solitaireView.getTakenView().size();i++)
         {
             solitaireView.getTakenView().get(i).setX(solitaireView.xTaken);
-            solitaireView.getTakenView().get(i).setY(solitaireView.yTaken + i*solitaireView.getSetParameters().getdYDeck());
+            solitaireView.getTakenView().get(i).setY(solitaireView.yTaken);// + i*solitaireView.getSetParameters().getdYDeck());
         }
         solitaireView.setToForeGround(solitaireView.getTakenView());
     }
@@ -47,8 +51,8 @@ solitaireController.piocher();
             {
             solitaireView.xEvent = x;
             solitaireView.yEvent = y;
-            solitaireView.xTaken = solitaireView.getSetParameters().getxDefausse();
-            solitaireView.yTaken = solitaireView.getSetParameters().getyDefausse();
+            solitaireView.xTaken = App.xDefausse;//solitaireView.getSetParameters().getxDefausse();
+            solitaireView.yTaken = App.yDefausse;//solitaireView.getSetParameters().getyDefausse();
 
             solitaireView.getTakenView().get(0).setX(solitaireView.xTaken);
             solitaireView.getTakenView().get(0).setY(solitaireView.yTaken);

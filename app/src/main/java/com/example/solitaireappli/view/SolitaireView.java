@@ -2,6 +2,7 @@ package com.example.solitaireappli.view;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
+import com.example.solitaireappli.App;
 import com.example.solitaireappli.R;
 import com.example.solitaireappli.controller.DownTouchSolitaire;
 import com.example.solitaireappli.controller.MoveTouchSolitaire;
@@ -32,7 +35,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class SolitaireView extends RelativeLayout implements Observer, IGameInitView, ICollisionGame, ICollisionGameWithColumns, ICollisionGamePioche, ICollisionGameDefausse, ICollisionGamePiles{
+public class SolitaireView extends RelativeLayout implements Observer, IGameInitView, ICollisionGame, ICollisionGameWithColumns, ICollisionGamePioche, ICollisionGameDefausse, ICollisionGamePiles {
 
     DownTouchSolitaire downTouchSolitaire;
     MoveTouchSolitaire moveTouchSolitaire;
@@ -62,7 +65,7 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
         return setParameters;
     }
 
-    public ISetParameters setParameters = new SetParameters();
+    public ISetParameters setParameters = null;//new SetParameters();
 
     public ISetParametersTaken setParametersTaken = new SetParametersTaken();
 
@@ -87,14 +90,13 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
     View rootView;
 
 
-
-    RelativeLayout header;
+//    RelativeLayout header;
     RelativeLayout body;
-    RelativeLayout footer;
+//    RelativeLayout footer;
 
     SolitaireModel solitaireModel;
 
-    TextView textViewDev;
+//    TextView textViewDev;
 
     public SolitaireView(Context context) {
         super(context);
@@ -119,8 +121,7 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
     public void update(Observable observable, Object o) {
 
 
-
-     //   footer.removeAllViews();
+        //   footer.removeAllViews();
 
         updateHeader(observable);
         updateBody(observable);
@@ -128,72 +129,65 @@ public class SolitaireView extends RelativeLayout implements Observer, IGameInit
     }
 
 
-    private void  updateHeader(Observable observable)
-    {
-      //  header.removeAllViews();
-       SolitaireModel model = (SolitaireModel) observable;
+    private void updateHeader(Observable observable) {
+        //  header.removeAllViews();
+        SolitaireModel model = (SolitaireModel) observable;
 
 
     }
 
-    private void  updateBody(Observable observable)
-    {
+    private void updateBody(Observable observable) {
         body.removeAllViews();
         SolitaireModel model = (SolitaireModel) observable;
 
-piocheView.clear();
-        CardView cardViewPioche = model.getPioche().size()>0 ? new CardView(this.getContext(),model.getPioche().getCard(0)) : new CardView(this.getContext(),new Card(Suit.NONE, Rank.NONE,false));
-        body.addView(cardViewPioche,params);
-        cardViewPioche.setX(setParameters.getxPioche());
-        cardViewPioche.setY(setParameters.getyPioche());
+        piocheView.clear();
+        CardView cardViewPioche = model.getPioche().size() > 0 ? new CardView(this.getContext(), model.getPioche().getCard(0)) : new CardView(this.getContext(), new Card(Suit.NONE, Rank.NONE, false));
+        body.addView(cardViewPioche, params);
+        cardViewPioche.setX(App.xPioche);//setParameters.getxPioche());
+        cardViewPioche.setY(App.yPioche);//setParameters.getyPioche());
         piocheView.addCardView(cardViewPioche);
 
 
-defausseView.clear();
-        if(model.getDefausse().size()>0)
-        {
-            CardView cardView = new CardView(this.getContext(),model.getDefausse().getLastCard());
-            body.addView(cardView,params);
-            cardView.setX(setParameters.getxDefausse());
-            cardView.setY(setParameters.getyDefausse());
+        defausseView.clear();
+        if (model.getDefausse().size() > 0) {
+            CardView cardView = new CardView(this.getContext(), model.getDefausse().getLastCard());
+            body.addView(cardView, params);
+            cardView.setX(App.xDefausse);//setParameters.getxDefausse());
+            cardView.setY(App.yDefausse);//setParameters.getyDefausse());
+            defausseView.addCardView(cardView);
+        } else {
+            CardView cardView = new CardView(this.getContext(), new Card(Suit.NONE, Rank.NONE, false));
+            body.addView(cardView, params);
+            cardView.setX(App.xDefausse);//setParameters.getxDefausse());
+            cardView.setY(App.yDefausse);//setParameters.getyDefausse());
             defausseView.addCardView(cardView);
         }
 
-        else
-        {
-            CardView cardView = new CardView(this.getContext(),new Card(Suit.NONE, Rank.NONE,false));
-            body.addView(cardView,params);
-            cardView.setX(setParameters.getxDefausse());
-            cardView.setY(setParameters.getyDefausse());
-            defausseView.addCardView(cardView);
-        }
-
-pilesView.clear();
-        for(int i=0;i<model.getPiles().size();i++)
-        {
+        pilesView.clear();
+        for (int i = 0; i < model.getPiles().size(); i++) {
             CardCollectionView pileCollection = new ArrayCardCollectionView();
-            Card card = model.getPiles().get(i).size() == 0  ? new Card(Suit.NONE, Rank.NONE,false) : model.getPiles().get(i).getLastCard();
-            CardView cardView = new CardView(this.getContext(),card);
-            body.addView(cardView,params);
-            cardView.setX(setParameters.getxPiles() + i* setParameters.getdXPiles());
-            cardView.setY(setParameters.getyPiles() + i* setParameters.getdYPiles());
+            Card card = model.getPiles().get(i).size() == 0 ? new Card(Suit.NONE, Rank.NONE, false) : model.getPiles().get(i).getLastCard();
+            CardView cardView = new CardView(this.getContext(), card);
+            body.addView(cardView, params);
+            cardView.setX(App.xPiles + i * (App.CARD_WIDTH + App.S_SPACE));//setParameters.getxPiles() + i* setParameters.getdXPiles());
+            cardView.setY(App.yPiles);//setParameters.getyPiles() + i* setParameters.getdYPiles());
             pileCollection.addCardView(cardView);
             pilesView.add(pileCollection);
         }
 
         deckView.clear();
         CardCollectionView cardCollectionView;
-        for(int i=0;i<model.getDeck().size();i++)
-        {
+        for (int i = 0; i < model.getDeck().size(); i++) {
             cardCollectionView = new ArrayCardCollectionView();
-            for(int j=0;j<model.getDeck().get(i).size();j++)
-            {
+            for (int j = 0; j < model.getDeck().get(i).size(); j++) {
                 Card card = model.getDeck().get(i).getCard(j);
                 //Card card = model.getPiles().get(i).size() == 0  ? new Card(Suit.NONE, Rank.NONE,false) : model.getPiles().get(i).getLastCard();
-                CardView cardView = new CardView(this.getContext(),card);
-                body.addView(cardView,params);
-                cardView.setX(setParameters.getxDeck() + i* setParameters.getdXDeck());
-                cardView.setY(setParameters.getyDeck() + j* setParameters.getdYDeck());
+                CardView cardView = new CardView(this.getContext(), card);
+                body.addView(cardView, params);
+//                cardView.setX(setParameters.getxDeck() + i* setParameters.getdXDeck());
+//                cardView.setY(setParameters.getyDeck() + j* setParameters.getdYDeck());
+                cardView.setX(App.X_DECK + App.H_SPACE + i * (App.CARD_WIDTH + App.H_SPACE * 2));
+                cardView.setY(App.Y_DECK + j * App.V_SPACE);
                 cardCollectionView.addCardView(cardView);
             }
             deckView.add(cardCollectionView);
@@ -201,24 +195,34 @@ pilesView.clear();
 
         }
         takenView.clear();
-        for(int i=0;i<model.getTaken().size();i++)
-        {
-Card card = model.getTaken().getCard(i);
+        for (int i = 0; i < model.getTaken().size(); i++) {
+            Card card = model.getTaken().getCard(i);
             //Card card = model.getPiles().get(i).size() == 0  ? new Card(Suit.NONE, Rank.NONE,false) : model.getPiles().get(i).getLastCard();
-            CardView cardView = new CardView(this.getContext(),card);
-            body.addView(cardView,params);
+            CardView cardView = new CardView(this.getContext(), card);
+            body.addView(cardView, params);
             cardView.setX(xTaken);
-            cardView.setY(yTaken + i*setParameters.getdYDeck());
+            cardView.setY(yTaken + i * App.V_SPACE);// setParameters.getdYDeck());
             takenView.addCardView(cardView);
         }
 
-        if(model.isWin())
-        {
+        if (model.isWin()) {
 
-            body.addView(winView,params);
-            winView.setX(setParameters.getxWin());
-            winView.setY(setParameters.getyWin());
-            body.bringChildToFront(winView);
+            new AlertDialog.Builder(getContext()).setTitle(R.string.game_over).setMessage(R.string.game_tip).setNegativeButton(R.string.game_start, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    solitaireController.nouveauJeu();
+                    dialog.dismiss();
+                }
+            }).setPositiveButton(R.string.game_exit, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.exit(0);
+                }
+            }).create().show();
+//            body.addView(winView, params);
+//            winView.setX(90);//setParameters.getxWin());
+//            winView.setY(100);//setParameters.getyWin());
+//            body.bringChildToFront(winView);
         }
 //        for(int i=0;i<model.getDeck().size();i++)
 //        {
@@ -234,8 +238,8 @@ Card card = model.getTaken().getCard(i);
 //
 //        }
     }
-    private void  updateFooter(Observable observable)
-    {
+
+    private void updateFooter(Observable observable) {
 
     }
 
@@ -246,53 +250,52 @@ Card card = model.getTaken().getCard(i);
     }
 
 
-
     @Override
     public void init(Context context) {
+//        setParameters = (App)context.getApplicationContext();
+
         rootView = inflate(context, R.layout.solitaire_view, this);
 
-        header = findViewById(R.id.header);
+//        header = findViewById(R.id.header);
         body = findViewById(R.id.body);
-        footer = findViewById(R.id.footer);
+//        footer = findViewById(R.id.footer);
 
-        textViewDev = findViewById(R.id.textViewDev);
-        textViewDev.setText("Hello !");
+//        textViewDev = findViewById(R.id.textViewDev);
+//        textViewDev.setText("Hello !");
 
         piocheView = new ArrayCardCollectionView();
         defausseView = new ArrayCardCollectionView();
         pilesView = new ArrayList<CardCollectionView>();
         deckView = new ArrayList<CardCollectionView>();
 
-        takenView = new ArrayCardCollectionView() ;
-winView = new WinView(context);
+        takenView = new ArrayCardCollectionView();
+        winView = new WinView(context);
         solitaireModel = new SolitaireModel();
 
-buttonBack = findViewById(R.id.buttonBack);
-buttonNew = findViewById(R.id.buttonNew);
+        buttonBack = findViewById(R.id.buttonBack);
+        buttonNew = findViewById(R.id.buttonNew);
 
 
-buttonNew.setOnClickListener(new OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        solitaireController.nouveauJeu();
-    }
-});
+        buttonNew.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                solitaireController.nouveauJeu();
+            }
+        });
 
-buttonBack.setOnClickListener(new OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        solitaireController.lastMove();
-    }
-});
+        buttonBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                solitaireController.lastMove();
+            }
+        });
 //header.addView(buttonBack);
 //header.addView(buttonNew);
 
 
-
     }
 
-    public void setSolitaireModel(SolitaireModel model)
-    {
+    public void setSolitaireModel(SolitaireModel model) {
         this.solitaireModel = model;
         this.solitaireModel.addObserver(this);
         this.solitaireModel.loadGame(new LoadParameters());
@@ -301,40 +304,34 @@ buttonBack.setOnClickListener(new OnClickListener() {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
 
-       // assert(Math.abs(getCollisionPiocheItem().getXCollision() - (piocheView.get(0).getXCollision() + this.getX0()) )<10.f);
-            if(e.getAction() == MotionEvent.ACTION_DOWN)
-            {
-                downTouchSolitaire=new DownTouchSolitaire();
-                downTouchSolitaire.TouchSolitaire(this,this.solitaireController,e.getX(),e.getY());
-            }
-            if(e.getAction() == MotionEvent.ACTION_MOVE)
-            {
-                moveTouchSolitaire=new MoveTouchSolitaire();
-                moveTouchSolitaire.TouchSolitaire(this,this.solitaireController,e.getX(),e.getY());
-            }
-            if(e.getAction() == MotionEvent.ACTION_UP)
-            {
-                upTouchSolitaire=new UpTouchSolitaire();
-                upTouchSolitaire.TouchSolitaire(this,this.solitaireController,e.getX(),e.getY());
-            }
+        // assert(Math.abs(getCollisionPiocheItem().getXCollision() - (piocheView.get(0).getXCollision() + this.getX0()) )<10.f);
+        if (e.getAction() == MotionEvent.ACTION_DOWN) {
+            downTouchSolitaire = new DownTouchSolitaire();
+            downTouchSolitaire.TouchSolitaire(this, this.solitaireController, e.getX(), e.getY());
+        }
+        if (e.getAction() == MotionEvent.ACTION_MOVE) {
+            moveTouchSolitaire = new MoveTouchSolitaire();
+            moveTouchSolitaire.TouchSolitaire(this, this.solitaireController, e.getX(), e.getY());
+        }
+        if (e.getAction() == MotionEvent.ACTION_UP) {
+            upTouchSolitaire = new UpTouchSolitaire();
+            upTouchSolitaire.TouchSolitaire(this, this.solitaireController, e.getX(), e.getY());
+        }
 
-            return true;
+        return true;
     }
 
 
-    public void setDevText(String str)
-    {
-        textViewDev.setText(str);
+    public void setDevText(String str) {
+//        textViewDev.setText(str);
     }
 
 
     @Override
     public List<ICollisionItem> getListCollisionItems() {
         List<ICollisionItem> cardViews = new ArrayList<ICollisionItem>();
-        for(int i=0;i<deckView.size();i++)
-        {
-            for(int j=deckView.get(i).size()-1;j>=0;j--)
-            {
+        for (int i = 0; i < deckView.size(); i++) {
+            for (int j = deckView.get(i).size() - 1; j >= 0; j--) {
                 cardViews.add(deckView.get(i).get(j));
             }
         }
@@ -346,12 +343,9 @@ buttonBack.setOnClickListener(new OnClickListener() {
     @Override
     public String findCollisionItem(ICollisionItem iCollisionItem) {
 
-        for(int i=0;i<deckView.size();i++)
-        {
-            for(int j=0;j<deckView.get(i).size();j++)
-            {
-                if((deckView.get(i).get(j)).equals(iCollisionItem))
-                {
+        for (int i = 0; i < deckView.size(); i++) {
+            for (int j = 0; j < deckView.get(i).size(); j++) {
+                if ((deckView.get(i).get(j)).equals(iCollisionItem)) {
                     return i + "_" + j;
                 }
             }
@@ -372,8 +366,7 @@ buttonBack.setOnClickListener(new OnClickListener() {
 
 
     public void setToForeGround(CardCollectionView cardCollectionView) {
-        for(int i=0;i<cardCollectionView.size();i++)
-        {
+        for (int i = 0; i < cardCollectionView.size(); i++) {
             body.bringChildToFront(cardCollectionView.get(i));
         }
 
@@ -383,16 +376,17 @@ buttonBack.setOnClickListener(new OnClickListener() {
     @Override
     public List<ICollisionItem> getListCollisionColumnsItems() {
         List<ICollisionItem> cardViews = new ArrayList<ICollisionItem>();
-        for(int i=0;i<deckView.size();i++) {
-            if(deckView.get(i).size()>0)
-            {
+        for (int i = 0; i < deckView.size(); i++) {
+            if (deckView.get(i).size() > 0) {
                 cardViews.add((deckView.get(i)).getLastCardView());
-            }
-            else
-            {
+            } else {
                 CardView emptyCV = new CardView(this.getContext());
-                emptyCV.setX(setParameters.getxDeck() + i*setParameters.getdXDeck() );
-                emptyCV.setY(setParameters.getyDeck());
+//                emptyCV.setX(setParameters.getxDeck() + i*setParameters.getdXDeck() );
+//                emptyCV.setY(setParameters.getyDeck());
+
+                emptyCV.setX(App.X_DECK + App.H_SPACE + i * (App.CARD_WIDTH + App.H_SPACE * 2));
+                emptyCV.setY(App.Y_DECK);
+
                 cardViews.add(emptyCV);
             }
         }
@@ -413,7 +407,7 @@ buttonBack.setOnClickListener(new OnClickListener() {
     @Override
     public List<ICollisionItem> getListCollisionPilesItems() {
         List<ICollisionItem> cardViews = new ArrayList<ICollisionItem>();
-        for(int i=0;i<pilesView.size();i++)
+        for (int i = 0; i < pilesView.size(); i++)
             cardViews.add(pilesView.get(i).getLastCardView());
         return cardViews;
     }
